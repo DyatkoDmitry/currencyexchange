@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="currencyAUD">
+        <item>@string/currency_aud_base</item>
+        <item>@string/currency_aud_name</item>
+        <item>@drawable/ic_aud_flag</item>
+    </array>
+
+    <array name="currencyBGN">
+        <item>@string/currency_bgn_base</item>
+        <item>@string/currency_bgn_name</item>
+        <item>@drawable/ic_bgn_flag</item>
+    </array>
+
+    <array name="currencyBRL">
+        <item>@string/currency_brl_base</item>
+        <item>@string/currency_brl_name</item>
+        <item>@drawable/ic_brl_flag</item>
+    </array>
+
+    <array name="currencyCAD">
+        <item>@string/currency_cad_base</item>
+        <item>@string/currency_cad_name</item>
+        <item>@drawable/ic_cad_flag</item>
+    </array>
+
+    <array name="currencyCHF">
+        <item>@string/currency_chf_base</item>
+        <item>@string/currency_chf_name</item>
+        <item>@drawable/ic_chf_flag</item>
+    </array>
+
+    <array name="arrayAllCurrency">
+        <item>@array/currencyAUD</item>
+        <item>@array/currencyBGN</item>
+        <item>@array/currencyBRL</item>
+        <item>@array/currencyCAD</item>
+        <item>@array/currencyCHF</item>
+    </array>
+
+</resources>

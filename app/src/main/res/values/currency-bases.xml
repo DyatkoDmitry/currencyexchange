@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="currency_usd_base">USD</string>
+        <string name="currency_eur_base">EUR</string>
+        <string name="currency_chf_base">CHF</string>
+        <string name="currency_hrk_base">HRK</string>
+        <string name="currency_mxn_base">MXN</string>
+        <string name="currency_zar_base">ZAR</string>
+        <string name="currency_cny_base">CNY</string>
+        <string name="currency_thb_base">THB</string>
+        <string name="currency_aud_base">AUD</string>
+        <string name="currency_ils_base">ILS</string>
+        <string name="currency_krw_base">KRW</string>
+        <string name="currency_jpy_base">JPY</string>
+        <string name="currency_pln_base">PLN</string>
+        <string name="currency_gbp_base">GBP</string>
+        <string name="currency_idr_base">IDR</string>
+        <string name="currency_huf_base">HUF</string>
+        <string name="currency_php_base">PHP</string>
+        <string name="currency_try_base">TRY</string>
+        <string name="currency_rub_base">RUB</string>
+        <string name="currency_hkd_base">HKD</string>
+        <string name="currency_isk_base">ISK</string>
+        <string name="currency_dkk_base">DKK</string>
+        <string name="currency_cad_base">CAD</string>
+        <string name="currency_myr_base">MYR</string>
+        <string name="currency_bgn_base">BGN</string>
+        <string name="currency_nok_base">NOK</string>
+        <string name="currency_ron_base">RON</string>
+        <string name="currency_sgd_base">SGD</string>
+        <string name="currency_czk_base">CZK</string>
+        <string name="currency_sek_base">SEK</string>
+        <string name="currency_nzd_base">NZD</string>
+        <string name="currency_brl_base">BRL</string>
+        <string name="currency_inr_base">INR</string>
+</resources>
