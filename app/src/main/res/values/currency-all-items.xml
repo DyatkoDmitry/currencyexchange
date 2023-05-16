@@ -31,12 +31,208 @@
         <item>@drawable/ic_chf_flag</item>
     </array>
 
+    <array name="currencyCNY">
+        <item>@string/currency_cny_base</item>
+        <item>@string/currency_cny_name</item>
+        <item>@drawable/ic_cny_flag</item>
+    </array>
+
+    <array name="currencyCZK">
+        <item>@string/currency_czk_base</item>
+        <item>@string/currency_czk_name</item>
+        <item>@drawable/ic_czk_flag</item>
+    </array>
+
+    <array name="currencyDKK">
+        <item>@string/currency_dkk_base</item>
+        <item>@string/currency_dkk_name</item>
+        <item>@drawable/ic_dkk_flag</item>
+    </array>
+
+    <array name="currencyEUR">
+        <item>@string/currency_eur_base</item>
+        <item>@string/currency_eur_name</item>
+        <item>@drawable/ic_eur_flag</item>
+    </array>
+
+    <array name="currencyGBP">
+        <item>@string/currency_gbp_base</item>
+        <item>@string/currency_gbp_name</item>
+        <item>@drawable/ic_gbp_flag</item>
+    </array>
+
+    <array name="currencyHKD">
+        <item>@string/currency_hkd_base</item>
+        <item>@string/currency_hkd_name</item>
+        <item>@drawable/ic_hkd_flag</item>
+    </array>
+
+    <array name="currencyHRK">
+        <item>@string/currency_hrk_base</item>
+        <item>@string/currency_hrk_name</item>
+        <item>@drawable/ic_hrk_flag</item>
+    </array>
+
+    <array name="currencyHUF">
+        <item>@string/currency_huf_base</item>
+        <item>@string/currency_huf_name</item>
+        <item>@drawable/ic_huf_flag</item>
+    </array>
+
+    <array name="currencyIDR">
+        <item>@string/currency_idr_base</item>
+        <item>@string/currency_idr_name</item>
+        <item>@drawable/ic_idr_flag</item>
+    </array>
+
+    <array name="currencyILS">
+        <item>@string/currency_ils_base</item>
+        <item>@string/currency_ils_name</item>
+        <item>@drawable/ic_ils_flag</item>
+    </array>
+
+    <array name="currencyINR">
+        <item>@string/currency_inr_base</item>
+        <item>@string/currency_inr_name</item>
+        <item>@drawable/ic_inr_flag</item>
+    </array>
+
+    <array name="currencyISK">
+        <item>@string/currency_isk_base</item>
+        <item>@string/currency_isk_name</item>
+        <item>@drawable/ic_isk_flag</item>
+    </array>
+
+    <array name="currencyJPY">
+        <item>@string/currency_jpy_base</item>
+        <item>@string/currency_jpy_name</item>
+        <item>@drawable/ic_jpy_flag</item>
+    </array>
+
+    <array name="currencyKRW">
+        <item>@string/currency_krw_base</item>
+        <item>@string/currency_krw_name</item>
+        <item>@drawable/ic_krw_flag</item>
+    </array>
+
+    <array name="currencyMXN">
+        <item>@string/currency_mxn_base</item>
+        <item>@string/currency_mxn_name</item>
+        <item>@drawable/ic_mxn_flag</item>
+    </array>
+
+    <array name="currencyMYR">
+        <item>@string/currency_myr_base</item>
+        <item>@string/currency_myr_name</item>
+        <item>@drawable/ic_myr_flag</item>
+    </array>
+
+    <array name="currencyNOK">
+        <item>@string/currency_nok_base</item>
+        <item>@string/currency_nok_name</item>
+        <item>@drawable/ic_nok_flag</item>
+    </array>
+
+    <array name="currencyNZD">
+        <item>@string/currency_nzd_base</item>
+        <item>@string/currency_nzd_name</item>
+        <item>@drawable/ic_nzd_flag</item>
+    </array>
+
+    <array name="currencyPHP">
+        <item>@string/currency_php_base</item>
+        <item>@string/currency_php_name</item>
+        <item>@drawable/ic_php_flag</item>
+    </array>
+
+    <array name="currencyPLN">
+        <item>@string/currency_pln_base</item>
+        <item>@string/currency_pln_name</item>
+        <item>@drawable/ic_pln_flag</item>
+    </array>
+
+    <array name="currencyRON">
+        <item>@string/currency_ron_base</item>
+        <item>@string/currency_ron_name</item>
+        <item>@drawable/ic_ron_flag</item>
+    </array>
+
+    <array name="currencyRUB">
+        <item>@string/currency_rub_base</item>
+        <item>@string/currency_rub_name</item>
+        <item>@drawable/ic_rub_flag</item>
+    </array>
+
+    <array name="currencySEK">
+        <item>@string/currency_sek_base</item>
+        <item>@string/currency_sek_name</item>
+        <item>@drawable/ic_sek_flag</item>
+    </array>
+
+    <array name="currencySGD">
+        <item>@string/currency_sgd_base</item>
+        <item>@string/currency_sgd_name</item>
+        <item>@drawable/ic_sgd_flag</item>
+    </array>
+
+    <array name="currencyTHB">
+        <item>@string/currency_thb_base</item>
+        <item>@string/currency_thb_name</item>
+        <item>@drawable/ic_thb_flag</item>
+    </array>
+
+    <array name="currencyTRY">
+        <item>@string/currency_try_base</item>
+        <item>@string/currency_try_name</item>
+        <item>@drawable/ic_try_flag</item>
+    </array>
+
+    <array name="currencyUSD">
+        <item>@string/currency_usd_base</item>
+        <item>@string/currency_usd_name</item>
+        <item>@drawable/ic_usd_flag</item>
+    </array>
+
+    <array name="currencyZAR">
+        <item>@string/currency_zar_base</item>
+        <item>@string/currency_zar_name</item>
+        <item>@drawable/ic_zar_flag</item>
+    </array>
+
     <array name="arrayAllCurrency">
         <item>@array/currencyAUD</item>
         <item>@array/currencyBGN</item>
         <item>@array/currencyBRL</item>
         <item>@array/currencyCAD</item>
         <item>@array/currencyCHF</item>
+        <item>@array/currencyCNY</item>
+        <item>@array/currencyCZK</item>
+        <item>@array/currencyDKK</item>
+        <item>@array/currencyEUR</item>
+        <item>@array/currencyGBP</item>
+        <item>@array/currencyHKD</item>
+        <item>@array/currencyHRK</item>
+        <item>@array/currencyHUF</item>
+        <item>@array/currencyIDR</item>
+        <item>@array/currencyILS</item>
+        <item>@array/currencyINR</item>
+        <item>@array/currencyISK</item>
+        <item>@array/currencyJPY</item>
+        <item>@array/currencyKRW</item>
+        <item>@array/currencyMXN</item>
+        <item>@array/currencyMYR</item>
+        <item>@array/currencyNOK</item>
+        <item>@array/currencyNZD</item>
+        <item>@array/currencyPHP</item>
+        <item>@array/currencyPLN</item>
+        <item>@array/currencyRON</item>
+        <item>@array/currencyRUB</item>
+        <item>@array/currencySEK</item>
+        <item>@array/currencySGD</item>
+        <item>@array/currencyTHB</item>
+        <item>@array/currencyTRY</item>
+        <item>@array/currencyUSD</item>
+        <item>@array/currencyZAR</item>
     </array>
 
 </resources>

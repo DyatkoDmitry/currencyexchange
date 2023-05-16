@@ -1,25 +1,22 @@
 package com.example.currency_exchange
 
 
-import com.example.currency_exchange.model.ResourceProvider
-import com.example.currency_exchange.modules.EmptyClass
-import com.example.currency_exchange.modules.ModuleContext
-import com.example.currency_exchange.modules.ModuleEmpty
-import com.example.currency_exchange.modules.ModuleRecycler
-import com.example.currency_exchange.modules.ModuleResources
+import com.example.currency_exchange.model.APIService
+import com.example.currency_exchange.model.ItemStateService
+import com.example.currency_exchange.modules.ModuleAdapter
 import com.example.currency_exchange.modules.ModuleRetrofit
-import com.example.currency_exchange.view.RecyclerAdapter
+import com.example.currency_exchange.modules.ModuleStates
 import dagger.Component
 
-@Component(modules = [ModuleResources::class, ModuleEmpty::class, ModuleRetrofit::class, ModuleRecycler::class])
+@Component(modules = [ModuleStates::class, ModuleRetrofit::class, ModuleAdapter::class])
 interface AppComponent {
 
-    fun getResourceProvider(): ResourceProvider
+    fun getItemStateService(): ItemStateService
 
-    fun injectViewModdel(viewModelMy: ViewModelMy)
+    fun injectViewModdel(viewModel: ViewModelMy)
 
-    fun injectAdapter(recyclerAdapter: RecyclerAdapter)
+    fun getAdapter(): Adapter
 
-    fun getRecyclerAdapter(): RecyclerAdapter
+    fun getAPIService(): APIService
 
 }

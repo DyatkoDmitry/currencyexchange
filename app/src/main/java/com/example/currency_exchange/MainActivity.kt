@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currency_exchange.databinding.ActivityMainBinding
-import com.example.currency_exchange.view.RecyclerAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ViewModelMy by viewModels()
-    private lateinit var recyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>
+    private lateinit var adapter: RecyclerView.Adapter<Adapter.MyViewHolder>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -25,25 +24,26 @@ class MainActivity : AppCompatActivity() {
 
         (application as App).appComponent.injectViewModdel(viewModel)
 
-        recyclerAdapter = (application as App).appComponent.getRecyclerAdapter()
+        adapter = (application as App).appComponent.getAdapter()
+
+        //val apiService = (application as App).appComponent.getAPIService()
 
         val recyclerView: RecyclerView = binding.recyclerView
         recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
-        recyclerView.adapter = recyclerAdapter
+        recyclerView.adapter = adapter
 
-        viewModel.getCertainCurrency("AUD")
-
-        viewModel.liveDataCurrency.observe(this, Observer {
-            Log.d("TAG", "One base in MainActivity = ${it.base}")
-        })
-
-        viewModel.getAllDataCurrency()
-
-        lifecycleScope.launch {
+       /* lifecycleScope.launch {
             while(true){
                 delay(1000)
                 Log.d("TAG"," tick ")
             }
-        }
+        }*/
+
+        viewModel.listRates.observe(this, Observer {
+            for(currency in it){
+                Log.d("TAG", it.size.toString())
+            }
+        })
+
     }
 }

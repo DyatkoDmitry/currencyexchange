@@ -1,6 +1,6 @@
 package com.example.currency_exchange.modules
 
-import com.example.currency_exchange.model.CurrencyAPIService
+import com.example.currency_exchange.model.APIService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -18,7 +18,7 @@ class ModuleRetrofit {
     }
 
     @Provides
-    fun getAPIService(retrofit: Retrofit):CurrencyAPIService{
-        return retrofit.create(CurrencyAPIService::class.java)
+    fun getAPIService(retrofit: Retrofit):APIService{
+        return retrofit.create(APIService::class.java)
     }
 }

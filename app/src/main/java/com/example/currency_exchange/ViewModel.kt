@@ -1,18 +1,14 @@
 package com.example.currency_exchange
 
-import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currency_exchange.model.Cell
-import com.example.currency_exchange.model.CurrencyAPIService
-import com.example.currency_exchange.model.DataCurrency
-import com.example.currency_exchange.model.ResourceProvider
-import com.example.currency_exchange.modules.EmptyClass
-import kotlinx.coroutines.Dispatchers
+import com.example.currency_exchange.model.APIService
+import com.example.currency_exchange.model.ItemState
+import com.example.currency_exchange.model.ItemStateService
+import com.example.currency_exchange.model.Rate
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -20,40 +16,43 @@ import javax.inject.Inject
 
 class ViewModelMy: ViewModel() {
 
-    @Inject lateinit var resourceProvider: ResourceProvider
-    @Inject lateinit var currencyAPIService: CurrencyAPIService
+    @Inject lateinit var itemStateService: ItemStateService
+    @Inject lateinit var apiService: APIService
 
-    private val _liveDataCurrency: MutableLiveData<DataCurrency> = MutableLiveData<DataCurrency>()
-    val liveDataCurrency: LiveData<DataCurrency> = _liveDataCurrency
+    private val _listRates: MutableLiveData<List<Rate>> = MutableLiveData<List<Rate>>()
+    val listRates: LiveData<List<Rate>> = _listRates
 
-    private val _liveDataAllCurrency: MutableLiveData<List<DataCurrency>> = MutableLiveData<List<DataCurrency>>()
-    val liveDataAllCurrency: LiveData<List<DataCurrency>> = _liveDataAllCurrency
+    private val _listItemStates: MutableLiveData<List<ItemState>> = MutableLiveData<List<ItemState>>()
+    //val listItemStates: LiveData<List<ItemState>>
 
+    private val _intt: MutableLiveData<Int> = MutableLiveData<Int>()
+    val intt: LiveData<Int> = _intt
 
-
-    fun getListCells(): List<Cell>{
-        return resourceProvider.getListCells()
+    init{
+    ///getAllRates()
+        //_listItemStates.postValue(itemStateService.getStates())
+        /*viewModelScope.launch {
+            apiService.getAllRates()
+            //_listRates.value = apiService.getAllRates()
+            //_listItemStates.postValue(itemStateService.getStates())
+        }
+*/
     }
 
-    fun getAllDataCurrency(){
+    fun getAllRates(){
 
         viewModelScope.launch {
-            val allDataCurrency = currencyAPIService.getAllCurrency()
-            for(currency in allDataCurrency){
+            val allRates = apiService.getAllRates()
+            _listRates.postValue(allRates)
+           /* for(currency in allRates){
                 Log.d("TAG", currency.base)
-            }
+            }*/
         }
     }
 
-    fun getCertainCurrency(base: String){
-
-        viewModelScope.launch{
-            val currency = currencyAPIService.getCertainCurrency(base)
-            _liveDataCurrency.value = currency
+    fun getInt(){
+        viewModelScope.launch {
+            _intt.postValue(123)
         }
-    }
-
-    fun updateData(){
-
     }
 }
