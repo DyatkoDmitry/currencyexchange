@@ -19,4 +19,6 @@ interface AppComponent {
 
     fun getAPIService(): APIService
 
+    fun getViewModelsFactory(): ViewModelFactory
+
 }

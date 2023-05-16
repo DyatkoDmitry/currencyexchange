@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: ViewModelMy by viewModels()
+    private val viewModel: ViewModelMy by viewModels{(application as App).appComponent.getViewModelsFactory()}
     private lateinit var adapter: RecyclerView.Adapter<Adapter.MyViewHolder>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         (application as App).appComponent.injectViewModdel(viewModel)
 
         adapter = (application as App).appComponent.getAdapter()
-
-        //val apiService = (application as App).appComponent.getAPIService()
 
         val recyclerView: RecyclerView = binding.recyclerView
         recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
@@ -40,9 +38,15 @@ class MainActivity : AppCompatActivity() {
         }*/
 
         viewModel.listRates.observe(this, Observer {
-            for(currency in it){
-                Log.d("TAG", it.size.toString())
+
+            for (i in it.indices){
+                Log.d("TAG", it.get(i).base.toString())
             }
+
+            /*for (i in it){
+                Log.d("TAG", i.base.toString())
+            }*/
+
         })
 
     }
