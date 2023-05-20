@@ -1,5 +1,8 @@
 package com.example.currency_exchange
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,14 +10,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.currency_exchange.model.APIService
-import com.example.currency_exchange.model.ItemState
-import com.example.currency_exchange.model.ItemStateService
-import com.example.currency_exchange.model.Rate
+import com.example.currency_exchange.model.LocalState
+import com.example.currency_exchange.model.RemoteState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class Adapter(val listItemStates: List<ItemState>): RecyclerView.Adapter<Adapter.MyViewHolder>() {
-
-    lateinit var rates: List<Rate>
+class Adapter @AssistedInject constructor(val listItemStates: List<LocalState>, @Assisted val listRemoteStates: List<RemoteState>): RecyclerView.Adapter<Adapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
@@ -24,8 +25,30 @@ class Adapter(val listItemStates: List<ItemState>): RecyclerView.Adapter<Adapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): Adapter.MyViewHolder {
+
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
-        return Adapter.MyViewHolder(itemView)
+
+        val myViewHolder:MyViewHolder = MyViewHolder(itemView)
+
+        itemView.findViewById<EditText>(R.id.editText).addTextChangedListener(
+            object: TextWatcher {
+                override fun afterTextChanged(editable: Editable?) {
+                    editable?.toString()?.let {
+
+                        val position = myViewHolder.adapterPosition
+
+                        if (position != RecyclerView.NO_POSITION) {
+                            position
+                        }
+                    }
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            }
+        )
+
+        return myViewHolder
     }
 
     override fun getItemCount(): Int {
@@ -37,11 +60,19 @@ class Adapter(val listItemStates: List<ItemState>): RecyclerView.Adapter<Adapter
         holder.imageView.setImageDrawable(itemState.drawable)
         holder.textViewBase.text = itemState.base
         holder.textViewDescription.text = itemState.name
-
+        holder.editText.setText(getRateByItem(itemState))
     }
 
-    fun insertRates(listRates:List<Rate>){
-        rates = listRates
-        notifyDataSetChanged()
+    fun getRateByItem(localState: LocalState): String{
+
+        var currencyRate = ""
+
+        for (rateItem in listRemoteStates){
+            if(localState.base.equals(rateItem.base)){
+                currencyRate = rateItem.rate.toString()
+            }
+        }
+        return currencyRate
     }
 }
+

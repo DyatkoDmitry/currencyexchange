@@ -9,45 +9,40 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currency_exchange.databinding.ActivityMainBinding
+import com.example.currency_exchange.model.AdapterFactory
+import com.example.currency_exchange.model.AdapterFactory_Impl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ViewModelMy by viewModels{(application as App).appComponent.getViewModelsFactory()}
-    private lateinit var adapter: RecyclerView.Adapter<Adapter.MyViewHolder>
+
+    @Inject
+    lateinit var adapterFactory: AdapterFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
+        (application as App).appComponent.injectMainActivity(this)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        (application as App).appComponent.injectViewModdel(viewModel)
-
-        adapter = (application as App).appComponent.getAdapter()
-
-        val recyclerView: RecyclerView = binding.recyclerView
-        recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
-        recyclerView.adapter = adapter
-
-       /* lifecycleScope.launch {
-            while(true){
-                delay(1000)
-                Log.d("TAG"," tick ")
-            }
-        }*/
-
         viewModel.listRates.observe(this, Observer {
-
-            for (i in it.indices){
-                Log.d("TAG", it.get(i).base.toString())
-            }
-
-            /*for (i in it){
-                Log.d("TAG", i.base.toString())
-            }*/
-
+            val adapter = adapterFactory.create(viewModel.listRates.value!!)
+            val recyclerView: RecyclerView = binding.recyclerView
+            recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
+            recyclerView.adapter = adapter
         })
 
+        viewModel.listItemStates.observe(this, Observer {
+            for (i in it.indices){
+                Log.d("TAG", "Item: " + it.get(i).base.toString())
+            }
+        })
     }
 }

@@ -14,5 +14,4 @@ class App: Application() {
             .moduleContext(ModuleContext(this))
             .build()
     }
-
 }

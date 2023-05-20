@@ -1,8 +1,10 @@
 package com.example.currency_exchange.modules
 
 import com.example.currency_exchange.Adapter
-import com.example.currency_exchange.model.ItemState
-import com.example.currency_exchange.model.ItemStateService
+import com.example.currency_exchange.model.APIService
+import com.example.currency_exchange.model.AdapterFactory
+import com.example.currency_exchange.model.LocalState
+import com.example.currency_exchange.model.LocalStateService
 import dagger.Module
 import dagger.Provides
 
@@ -10,7 +12,7 @@ import dagger.Provides
 class ModuleAdapter {
 
     @Provides
-    fun getAdapter(itemStateService: ItemStateService): Adapter {
-        return Adapter(itemStateService.getStates())
+    fun getListItems(localStateService: LocalStateService): List<LocalState> {
+        return localStateService.getLocalStates()
     }
 }

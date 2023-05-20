@@ -3,13 +3,13 @@ package com.example.currency_exchange.model
 import android.content.Context
 import com.example.currency_exchange.R
 
-class ItemStateService(val context: Context) {
+class LocalStateService(val context: Context) {
 
-    fun getStates():List<ItemState>{
+    fun getLocalStates():List<LocalState>{
 
         val mainArray = context.resources.obtainTypedArray(R.array.arrayAllCurrency)
         val length = mainArray.length()
-        var stateList: MutableList<ItemState> = mutableListOf()
+        var stateList: MutableList<LocalState> = mutableListOf()
 
         for (i in 0 until length){
             val resId = mainArray.getResourceId(i,0)
@@ -19,7 +19,7 @@ class ItemStateService(val context: Context) {
             val name = state.getString(1)!!
             val drawable = state.getDrawable(2)!!
 
-            stateList.add(ItemState(i,base,name,drawable,null))
+            stateList.add(LocalState(base,name,drawable))
         }
 
         mainArray.recycle()
