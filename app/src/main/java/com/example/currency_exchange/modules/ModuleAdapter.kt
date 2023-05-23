@@ -11,8 +11,8 @@ import dagger.Provides
 @Module(includes = [ModuleStates::class, ModuleRetrofit::class])
 class ModuleAdapter {
 
-    @Provides
+   /* @Provides
     fun getListItems(localStateService: LocalStateService): List<LocalState> {
         return localStateService.getLocalStates()
-    }
+    }*/
 }

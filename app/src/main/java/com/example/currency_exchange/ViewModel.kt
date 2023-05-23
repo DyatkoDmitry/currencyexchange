@@ -6,38 +6,36 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.currency_exchange.model.APIService
+import com.example.currency_exchange.model.Item
+import com.example.currency_exchange.model.ItemService
 import com.example.currency_exchange.model.LocalState
 import com.example.currency_exchange.model.LocalStateService
 import com.example.currency_exchange.model.RemoteState
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 import javax.inject.Inject
 
-class ViewModelMy(val itemStateService: LocalStateService, val apiService: APIService): ViewModel() {
+class ViewModelMy(val apiService: APIService, val itemService: ItemService): ViewModel() {
 
-    private val _listRates: MutableLiveData<List<RemoteState>> = MutableLiveData<List<RemoteState>>()
-    val listRates: LiveData<List<RemoteState>> = _listRates
-
-    private val _listItemStates: MutableLiveData<List<LocalState>> = MutableLiveData<List<LocalState>>()
-    val listItemStates: LiveData<List<LocalState>> = _listItemStates
+    private val _listItems: MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
+    val listItems: LiveData<List<Item>> = _listItems
 
     init{
-        getAllRates()
-        getAllStates()
-    }
-
-    fun getAllRates(){
         viewModelScope.launch {
-            val allRates = apiService.getAllRemoteStates()
-            _listRates.postValue(allRates)
+            getItems()
+            /*while (true){
+                delay(10000)
+                //getItems()
+            }*/
         }
     }
 
-    fun getAllStates(){
+    fun getItems(){
         viewModelScope.launch {
-            val allStates = itemStateService.getLocalStates()
-            _listItemStates.postValue(allStates)
+            val listItems = itemService.getItems()
+            _listItems.postValue(listItems)
         }
     }
 }

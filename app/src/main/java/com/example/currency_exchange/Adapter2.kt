@@ -10,13 +10,23 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.currency_exchange.model.Item
 import com.example.currency_exchange.model.LocalState
 import com.example.currency_exchange.model.RemoteState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import javax.inject.Inject
 
 
-class Adapter @AssistedInject constructor(val listItemStates: List<LocalState>, @Assisted val listRemoteStates: List<RemoteState>): RecyclerView.Adapter<Adapter.MyViewHolder>() {
+class Adapter2 @Inject constructor(listItems:MutableList<Item>): RecyclerView.Adapter<Adapter2.MyViewHolder>() {
+
+    val listItems:MutableList<Item> = listItems
+
+    fun setListItems(newListItems: List<Item>){
+        listItems.clear()
+        listItems.addAll(0, newListItems)
+        notifyDataSetChanged()
+    }
 
     class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
@@ -25,7 +35,7 @@ class Adapter @AssistedInject constructor(val listItemStates: List<LocalState>, 
         val editText: EditText = itemView.findViewById(R.id.editText)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): Adapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): Adapter2.MyViewHolder {
 
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
 
@@ -35,7 +45,7 @@ class Adapter @AssistedInject constructor(val listItemStates: List<LocalState>, 
             object: TextWatcher {
                 override fun afterTextChanged(editable: Editable?) {
                     editable?.toString()?.let {
-
+                        Log.d("TAG", it)
                         val position = myViewHolder.adapterPosition
 
                         if (position != RecyclerView.NO_POSITION) {
@@ -53,27 +63,15 @@ class Adapter @AssistedInject constructor(val listItemStates: List<LocalState>, 
     }
 
     override fun getItemCount(): Int {
-        return listItemStates.size
+        return listItems.size
     }
 
-    override fun onBindViewHolder(holder: Adapter.MyViewHolder, position: Int) {
-        val itemState = listItemStates.get(position)
+    override fun onBindViewHolder(holder: Adapter2.MyViewHolder, position: Int) {
+        val itemState = listItems.get(position)
         holder.imageView.setImageDrawable(itemState.drawable)
         holder.textViewBase.text = itemState.base
         holder.textViewDescription.text = itemState.name
-        holder.editText.setText(getRateByItem(itemState))
-    }
-
-    fun getRateByItem(localState: LocalState): String{
-
-        var currencyRate = ""
-
-        for (rateItem in listRemoteStates){
-            if(localState.base.equals(rateItem.base)){
-                currencyRate = rateItem.rate.toString()
-            }
-        }
-        return currencyRate
+        holder.editText.setText(itemState.rate.toString())
     }
 }
 
