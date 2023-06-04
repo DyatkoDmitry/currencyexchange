@@ -8,34 +8,49 @@ import androidx.lifecycle.viewModelScope
 import com.example.currency_exchange.model.APIService
 import com.example.currency_exchange.model.Item
 import com.example.currency_exchange.model.ItemService
-import com.example.currency_exchange.model.LocalState
-import com.example.currency_exchange.model.LocalStateService
-import com.example.currency_exchange.model.RemoteState
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 import javax.inject.Inject
 
 class ViewModelMy(val apiService: APIService, val itemService: ItemService): ViewModel() {
 
-    private val _listItems: MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
-    val listItems: LiveData<List<Item>> = _listItems
+    private val _currentListItems: MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
+    val currentListItems: LiveData<List<Item>> = _currentListItems
+
+    private lateinit var listItems: MutableList<Item>
 
     init{
         viewModelScope.launch {
             getItems()
-            /*while (true){
-                delay(10000)
-                //getItems()
-            }*/
         }
     }
 
-    fun getItems(){
-        viewModelScope.launch {
-            val listItems = itemService.getItems()
-            _listItems.postValue(listItems)
+    suspend fun getItems():MutableList<Item>{
+        listItems = itemService.getItems()
+        _currentListItems.postValue(listItems)
+        return listItems
+    }
+
+    suspend fun updateItem(position: Int){
+        val updateItem = listItems.get(position)
+        val remoteItem = itemService.getItem(updateItem.base)
+        if(remoteItem != null){
+            updateItem.rate = remoteItem.rate
+        }
+    }
+
+    val itemInputListener:ItemInputListener = {
+        Log.d("TAG", "editable = " + "${it}")
+    }
+
+    val itemFocusListener:ItemFocusListener = {
+
+        val firstItem = listItems.removeAt(it)
+        firstItem.rate = 0.0F
+        listItems.add(0, firstItem)
+
+        viewModelScope.launch{
+            updateItem(1)
+            _currentListItems.postValue(listItems)
         }
     }
 }

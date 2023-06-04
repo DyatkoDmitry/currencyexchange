@@ -6,11 +6,11 @@ class ItemService @Inject constructor(val localStateService: LocalStateService, 
 
     val listLocalStates = localStateService.getLocalStates()
 
-    suspend fun getItems():List<Item>{
+    val length = listLocalStates.size
+
+    suspend fun getItems():MutableList<Item>{
 
         var listItems:MutableList<Item> = mutableListOf()
-
-        val length = listLocalStates.size
 
         val listRemoteStates = apiService.getAllRemoteStates()
 
@@ -31,5 +31,21 @@ class ItemService @Inject constructor(val localStateService: LocalStateService, 
         return listItems
     }
 
+    suspend fun getItem(base: String): Item?{
+
+        val remoteCertainState = apiService.getCertainRemoteState(base)
+        var item: Item? = null
+
+        for(localState in listLocalStates){
+            if(localState.base.equals(base)){
+               val rate=remoteCertainState.rate
+               val base=localState.base
+               val drawable = localState.drawable
+               val name = localState.name
+               item = Item(base,name,drawable,rate)
+           }
+        }
+        return item
+    }
 
 }
