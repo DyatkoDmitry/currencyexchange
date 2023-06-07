@@ -1,6 +1,7 @@
 package com.example.currency_exchange
 
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -20,11 +21,12 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Scope
 
 typealias ItemInputListener = (Float?) -> Unit
 typealias ItemFocusListener = (Int) -> Unit
 
-class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListener: ItemInputListener, val itemFocusListener: ItemFocusListener): RecyclerView.Adapter<Adapter2.MyViewHolder>() {
+class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListener: ItemInputListener, val itemFocusListener: ItemFocusListener, context: Context): RecyclerView.Adapter<Adapter2.MyViewHolder>() {
 
     private var positionCurrent: Int = 0
 
@@ -32,7 +34,8 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
     val sharedFlowEditable = _sharedFlowEditable.asSharedFlow()
 
     private var setedListener = false
-    val tWatcher = TextWatcherEditText(_sharedFlowEditable)
+    lateinit var jobTextListener: Job
+    var isGetting = true
 
     val scope = CoroutineScope(Dispatchers.Default + Job())
 
@@ -41,7 +44,7 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
         notifyDataSetChanged()
     }
 
-    class MyViewHolder(itemView: View, val textWatcherEditText: TextWatcherEditText ): RecyclerView.ViewHolder(itemView){
+    class MyViewHolder(itemView: View, val textWatcher: TextWatcher): RecyclerView.ViewHolder(itemView){
 
 
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
@@ -50,70 +53,60 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
         val editText: EditText = itemView.findViewById(R.id.editText)
 
         fun enableTextWatcher() {
-            editText.addTextChangedListener(textWatcherEditText)
+            //Log.d("TAG", "enabled")
+            editText.addTextChangedListener(textWatcher)
         }
 
         fun disableTextWatcher() {
-            editText.removeTextChangedListener(textWatcherEditText)
-        }
-    }
-
-    /*class ViewHolder(v: View, myCustomEditTextListener: MyCustomEditTextListener) :
-        RecyclerView.ViewHolder(v) {
-        // each data item is just a string in this case
-        var mEditText: EditText
-        var myCustomEditTextListener: MyCustomEditTextListener
-
-        init {
-            mEditText = v.findViewById<View>(R.id.editText) as EditText
-            this.myCustomEditTextListener = myCustomEditTextListener
-        }
-
-        fun enableTextWatcher() {
-            mEditText.addTextChangedListener(myCustomEditTextListener)
-        }
-
-        fun disableTextWatcher() {
-            mEditText.removeTextChangedListener(myCustomEditTextListener)
-        }
-    }*/
-
-
-    override fun onViewRecycled(holder: MyViewHolder) {
-        super.onViewRecycled(holder)
-        if((holder.adapterPosition == 0) &&(holder.editText.getTag() == 1)){
-            Log.d("TAG", "tag = ${(holder.editText.getTag())} and et = ${holder.editText.text}")
+            //Log.d("TAG", "disable")
+            editText.removeTextChangedListener(textWatcher)
         }
     }
 
     override fun onViewAttachedToWindow(holder: MyViewHolder) {
         super.onViewAttachedToWindow(holder)
+        holder.enableTextWatcher()
+        isGetting = true
 
         if((holder.adapterPosition == 0) &&(holder.editText.getTag() == 1)){
             //holder.editText.addTextChangedListener(TextWatcherEditText(_sharedFlowEditable))
             holder.enableTextWatcher()
+            isGetting = true
         }
+
+        holder.editText.setOnFocusChangeListener { view, b ->
+            if(b){
+                Log.d("TAG", "Edit in focus = ${(view as EditText).text.toString()}")
+                Log.d("TAG", "Pos in focus = ${holder.adapterPosition.toString()}")
+            }
+
+        }
+
+        //Log.d("TAG", "onViewAttachedToWindow position = ${holder.adapterPosition}")
+
+        /*if((holder.adapterPosition == 0) &&(holder.editText.getTag() == 1)){
+            //holder.editText.addTextChangedListener(TextWatcherEditText(_sharedFlowEditable))
+            holder.enableTextWatcher()
+            isGetting = true
+        }*/
     }
 
     override fun onViewDetachedFromWindow(holder: MyViewHolder) {
         super.onViewDetachedFromWindow(holder)
 
-
-        if((holder.adapterPosition == 0) &&(holder.editText.getTag() != 1)){
-            //holder.editText.removeTextChangedListener(TextWatcherEditText(_sharedFlowEditable))
-            holder.disableTextWatcher()
+        if((holder.adapterPosition == 0) &&(holder.editText.getTag() == 1)){
+           isGetting = false
+           holder.disableTextWatcher()
         }
+
+        //Log.d("TAG", "onViewDetachedFromWindow position = ${holder.adapterPosition}")
+
        /* holder.editText.tag?.let {
 
             Log.d("TAG", "tag = ${(holder.editText.getTag(1))} and et = ${holder.editText.text}")
 
             holder.editText.removeTextChangedListener(TextWatcherEditText(_sharedFlowEditable))
 
-        }*/
-
-
-        /*if(holder.adapterPosition != 0){
-            holder.editText.removeTextChangedListener(TextWatcherEditText(_sharedFlowEditable))
         }*/
 
         //Log.d("TAG", "onViewDetachedFromWindow position = ${holder.adapterPosition}")
@@ -123,13 +116,14 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
 
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
 
-        val myViewHolder = MyViewHolder(itemView, tWatcher)
+        val myViewHolder = MyViewHolder(itemView, textWatcherMy)
 
         itemView.setOnClickListener {
-
+            isGetting = true
             Log.d("TAG", "click listener = ${myViewHolder.adapterPosition}")
             positionCurrent = myViewHolder.adapterPosition
             itemFocusListener.invoke(myViewHolder.adapterPosition)
+            myViewHolder.enableTextWatcher()
         }
 
         itemView.findViewById<EditText>(R.id.editText).setOnTouchListener { view, motionEvent ->
@@ -148,11 +142,10 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
                 itemFocusListener.invoke(positionCurrent)
             }
             Log.d("TAG", "click listener editText = ${myViewHolder.adapterPosition}")
+            isGetting = true
+            myViewHolder.enableTextWatcher()
             return@setOnTouchListener true
         }
-
-
-        //itemView.findViewById<EditText>(R.id.editText).addTextChangedListener(TextWatcherEditText(_sharedFlowEditable))
 
         return myViewHolder
     }
@@ -163,6 +156,8 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
 
     override fun onBindViewHolder(holder: Adapter2.MyViewHolder, position: Int) {
 
+        //Log.d("TAG", "onBindViewHolder position = ${holder.adapterPosition}")
+
         val itemState = listItems.get(position)
         holder.imageView.setImageDrawable(itemState.drawable)
         holder.textViewBase.text = itemState.base
@@ -171,36 +166,42 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
 
         if(position == 0){
             holder.editText.requestFocus()
-            //holder.editText.setTag(1)
         }
 
         if((holder.adapterPosition == 0)&&(setedListener == false)){
             Log.d("TAG", "seted listener")
             setedListener = true
             holder.editText.setTag(1)
-            holder.editText.addTextChangedListener(TextWatcherEditText(_sharedFlowEditable))
         }
     }
 
-}
+    private val textWatcherMy = object : TextWatcher {
 
-class TextWatcherEditText(val _sharedFlowEditable: MutableSharedFlow<Float>): TextWatcher {
+        val scope = CoroutineScope(Dispatchers.Main + Job())
 
-    val scope = CoroutineScope(Dispatchers.Main + Job())
+        override fun afterTextChanged(editable: Editable?) {
+            /*editable?.toString()?.let {
 
-    override fun afterTextChanged(editable: Editable?) {
-        editable?.toString()?.let {
+                scope.launch {
+                    Log.d("TAG", "In scope: ${it.toString()}")
+                    _sharedFlowEditable.emit(it.toFloat())
+                }
+            }*/
+        }
 
-            scope.launch {
-                Log.d("TAG", "In scope: ${it.toString()}")
-                _sharedFlowEditable.emit(it.toFloat())
+        override fun beforeTextChanged(s: CharSequence?,start: Int,count: Int,after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?,start: Int,before: Int,count: Int) {
+            Log.d("TAG", "is Getting = ${isGetting}")
+            jobTextListener = scope.launch {
+                if(isGetting){
+
+                    Log.d("TAG", "In scope: ${s}")
+                    _sharedFlowEditable.emit(s.toString().toFloat())
+                }
             }
         }
-    }
-
-    override fun beforeTextChanged(s: CharSequence?,start: Int,count: Int,after: Int) {
-    }
-    override fun onTextChanged(s: CharSequence?,start: Int,before: Int,count: Int) {
     }
 }
 

@@ -36,11 +36,11 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
 
             val items = viewModel.getItems()
-            adapter = Adapter2(items, viewModel.itemInputListener, viewModel.itemFocusListener)
+            adapter = Adapter2(items, viewModel.itemInputListener, viewModel.itemFocusListener, applicationContext)
             recyclerView.adapter = adapter
 
             adapter.sharedFlowEditable.collect(){
-                Log.d("TAG", "in sharedFlow = ${it.toString()}")
+                //Log.d("TAG", "in sharedFlow = ${it.toString()}")
             }
 
             /*adapter.flowEditable.collect(){
