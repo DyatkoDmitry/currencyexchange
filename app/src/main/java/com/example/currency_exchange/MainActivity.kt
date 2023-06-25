@@ -35,23 +35,28 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            val items = viewModel.getItems()
-            adapter = Adapter2(items, viewModel.itemInputListener, viewModel.itemFocusListener, applicationContext)
+            //val items = viewModel.getItems()
+            //adapter = Adapter2(items, viewModel.itemInputListener, viewModel.itemFocusListener, applicationContext)
+
+            val viewItems = viewModel.getViewItems()
+            adapter = Adapter2(viewItems, viewModel.itemInputListener, viewModel.itemFocusListener, applicationContext)
+
+
             recyclerView.adapter = adapter
 
             adapter.sharedFlowEditable.collect(){
-                //Log.d("TAG", "in sharedFlow = ${it.toString()}")
-            }
 
-            /*adapter.flowEditable.collect(){
-                Log.d("TAG", "in float = ${it.toString()}")
-            }*/
+                viewModel.setCoefficient(it)
+            }
         }
 
 
         viewModel.currentListItems.observe(this, Observer {
+
+
             adapter.setNewListItems(it)
-            recyclerView.scrollToPosition(0)
+            adapter.notifyDataSetChanged()
+            //recyclerView.scrollToPosition(0)
         })
 
     }

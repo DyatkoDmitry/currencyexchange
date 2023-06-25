@@ -27,16 +27,17 @@ import javax.inject.Scope
 typealias ItemInputListener = (Float?) -> Unit
 typealias ItemFocusListener = (Int) -> Unit
 
-class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListener: ItemInputListener, val itemFocusListener: ItemFocusListener, context: Context): RecyclerView.Adapter<Adapter2.MyViewHolder>() {
+class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemInputListener: ItemInputListener, val itemFocusListener: ItemFocusListener, context: Context): RecyclerView.Adapter<Adapter2.MyViewHolder>() {
 
+    var viewListItems:MutableList<Item> = viewListItems
     private val _sharedFlowEditable = MutableSharedFlow<Float>()
     val sharedFlowEditable = _sharedFlowEditable.asSharedFlow()
+    private var clickedPosition = -1
 
-    private var setedListener = false
     lateinit var jobTextListener: Job
 
-    fun setNewListItems(newListItems:List<Item>){
-        listItems = newListItems
+    fun setNewListItems(newListItems:MutableList<Item>){
+        viewListItems = newListItems
         notifyDataSetChanged()
     }
 
@@ -59,15 +60,6 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
     override fun onViewAttachedToWindow(holder: MyViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.enableTextWatcher()
-
-
-        holder.editText.setOnFocusChangeListener { view, b ->
-            if((b)&&(holder.adapterPosition != 0)){
-                Log.d("TAG", " in setOnFocusChangeListener: ${holder.adapterPosition.toString()}")
-                selectItem(holder.adapterPosition)
-            }
-        }
-
     }
 
     override fun onViewDetachedFromWindow(holder: MyViewHolder) {
@@ -94,46 +86,36 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
             }
 
             if(positionClicked != -1 && positionClicked != null){
-                Log.d("TAG", " in setOnTouchListener: ${myViewHolder.adapterPosition.toString()}")
-
-                selectItem(myViewHolder.adapterPosition)
+                  selectItem(myViewHolder.adapterPosition)
             }
 
             return@setOnTouchListener true
         }
 
-        myViewHolder.editText.setOnClickListener {
-            Log.d("TAG", " In setOnClickListener")
+        myViewHolder.editText.setOnFocusChangeListener { view, hasFocus ->
+            if((hasFocus)&&(myViewHolder.adapterPosition != 0)){
+                  selectItem(myViewHolder.adapterPosition)
+            }
         }
+
         return myViewHolder
     }
 
     override fun getItemCount(): Int {
-        return listItems.size
+        return viewListItems.size
     }
 
     override fun onBindViewHolder(holder: Adapter2.MyViewHolder, position: Int) {
+        val itemState = viewListItems.get(position)
 
-        val itemState = listItems.get(position)
         holder.imageView.setImageDrawable(itemState.drawable)
         holder.textViewBase.text = itemState.base
         holder.textViewDescription.text = itemState.name
         holder.editText.setText(itemState.rate.toString())
-        //holder.editText.clearFocus()
-        if(position == 0){
-            holder.editText.requestFocus()
-        }
-
-       /* holder.editText.setOnFocusChangeListener { view, b ->
-            if(b){
-                Log.d("TAG", " in setOnFocusChangeListener: ${holder.adapterPosition.toString()}")
-                selectItem(holder.adapterPosition)
-            }
-        }*/
     }
 
     private fun selectItem(position:Int){
-        Log.d("TAG", " in selectItem: ${position.toString()}")
+
         itemFocusListener.invoke(position)
     }
 
@@ -150,9 +132,7 @@ class Adapter2 @Inject constructor(var listItems:List<Item>, val itemInputListen
         override fun onTextChanged(s: CharSequence?,start: Int,before: Int,count: Int) {
 
             jobTextListener = scope.launch {
-
-                    Log.d("TAG", "In text listeber: ${s}")
-                    _sharedFlowEditable.emit(s.toString().toFloat())
+                _sharedFlowEditable.emit(s.toString().toFloat())
             }
         }
     }
