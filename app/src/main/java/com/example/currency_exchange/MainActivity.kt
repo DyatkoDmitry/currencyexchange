@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            //val items = viewModel.getItems()
-            //adapter = Adapter2(items, viewModel.itemInputListener, viewModel.itemFocusListener, applicationContext)
+            viewModel.setInitializedLists()
 
             val viewItems = viewModel.getViewItems()
             adapter = Adapter2(viewItems, viewModel.itemInputListener, viewModel.itemFocusListener, applicationContext)
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter = adapter
 
             adapter.sharedFlowEditable.collect(){
-
                 viewModel.setCoefficient(it)
             }
         }
@@ -53,11 +51,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.currentListItems.observe(this, Observer {
 
-
             adapter.setNewListItems(it)
             adapter.notifyDataSetChanged()
             //recyclerView.scrollToPosition(0)
         })
-
     }
 }
