@@ -27,7 +27,7 @@ import javax.inject.Scope
 typealias ItemInputListener = (Float?) -> Unit
 typealias ItemFocusListener = (Int) -> Unit
 
-class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemInputListener: ItemInputListener, val itemFocusListener: ItemFocusListener, context: Context): RecyclerView.Adapter<Adapter2.MyViewHolder>() {
+class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemFocusListener: ItemFocusListener): RecyclerView.Adapter<Adapter2.MyViewHolder>() {
 
     var viewListItems:MutableList<Item> = viewListItems
     private val _sharedFlowEditable = MutableSharedFlow<Float>()

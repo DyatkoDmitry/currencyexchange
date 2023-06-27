@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.setInitializedLists()
 
             val viewItems = viewModel.getViewItems()
-            adapter = Adapter2(viewItems, viewModel.itemInputListener, viewModel.itemFocusListener, applicationContext)
+            adapter = Adapter2(viewItems, viewModel.itemFocusListener)
 
 
             recyclerView.adapter = adapter

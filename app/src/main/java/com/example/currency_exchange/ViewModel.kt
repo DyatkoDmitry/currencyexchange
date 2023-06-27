@@ -20,46 +20,26 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
 
     private lateinit var viewListItems: MutableList<Item>
 
-    suspend fun getOriginViewItems():MutableList<Item>{
-
-        if(!this::listItems.isInitialized){
-            listItems = itemService.getItems()
-        }
-
-        viewListItems = mutableListOf()
-
-        for (item in listItems){
-            viewListItems.add(item.copy(item.base, item.name, item.drawable, item.rate))
-        }
-
-        return viewListItems
-
-    }
-
     suspend fun updateItemsRate(position: Int){
-        val updateItem = viewListItems.get(position)
+        val updateItem = listItems.get(position)
         val remoteItem = itemService.getItem(updateItem.base)
         if(remoteItem != null){
             updateItem.rate = remoteItem.rate
         }
     }
 
-    val itemInputListener:ItemInputListener = {
-
-    }
-
     val itemFocusListener:ItemFocusListener = {
 
-        val firstItem = viewListItems.removeAt(it)
+        val firstItem = listItems.removeAt(it)
 
         firstItem.rate = 0.0F
 
-        viewListItems.add(0, firstItem)
+        listItems.add(0, firstItem)
 
         viewModelScope.launch{
             updateItemsRate(1)
             Log.d("TAG", "In FocusListener: listItems = ${listItems.hashCode()} and viewListItems = ${viewListItems.hashCode()}}")
-            _currentListItems.postValue(viewListItems)
+            _currentListItems.postValue(listItems)
         }
     }
 
@@ -67,8 +47,9 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
 
         viewListItems.get(0).rate = coefficient
 
-        for (i in 1 until viewListItems.size){
-            viewListItems.get(i).rate *= coefficient
+        for (i in 1 until listItems.size){
+            viewListItems.get(i).rate = coefficient * listItems.get(i).rate
+            //viewListItems.get(i).rate *= coefficient
         }
         _currentListItems.postValue(viewListItems)
     }
