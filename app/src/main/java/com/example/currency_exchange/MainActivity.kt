@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,25 +36,30 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            viewModel.setInitializedLists()
+            //viewModel.setInitializedLists()
 
-            val viewItems = viewModel.getViewItems()
-            adapter = Adapter2(viewItems, viewModel.itemFocusListener)
+            //val viewItems = viewModel.getViewItems()
+            val items = viewModel.getItems()
+            adapter = Adapter2(items, viewModel.itemFocusListener)
 
 
             recyclerView.adapter = adapter
+
 
             adapter.sharedFlowEditable.collect(){
                 viewModel.setCoefficient(it)
             }
         }
 
+        lifecycleScope.launch {
+            viewModel.startRefreshingRates()
+        }
 
         viewModel.currentListItems.observe(this, Observer {
 
             adapter.setNewListItems(it)
             adapter.notifyDataSetChanged()
-            //recyclerView.scrollToPosition(0)
+            recyclerView.scrollToPosition(0)
         })
     }
 }

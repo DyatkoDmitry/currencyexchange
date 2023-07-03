@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.currency_exchange.model.APIService
 import com.example.currency_exchange.model.Item
 import com.example.currency_exchange.model.ItemService
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +21,10 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
     private lateinit var listItems: MutableList<Item>
 
     private lateinit var viewListItems: MutableList<Item>
+
+    private lateinit var copiedListItems: MutableList<Item>
+
+    private var coefficientFirstRate: Float? = null
 
     suspend fun updateItemsRate(position: Int){
         val updateItem = listItems.get(position)
@@ -32,41 +38,85 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
 
         val firstItem = listItems.removeAt(it)
 
+        coefficientFirstRate = 0F
         firstItem.rate = 0.0F
 
         listItems.add(0, firstItem)
 
         viewModelScope.launch{
             updateItemsRate(1)
-            Log.d("TAG", "In FocusListener: listItems = ${listItems.hashCode()} and viewListItems = ${viewListItems.hashCode()}}")
             _currentListItems.postValue(listItems)
         }
     }
 
-    fun setCoefficient(coefficient: Float){
+     fun setCoefficient(coefficient: Float){
 
-        viewListItems.get(0).rate = coefficient
+         coefficientFirstRate = coefficient
 
-        for (i in 1 until listItems.size){
-            viewListItems.get(i).rate = coefficient * listItems.get(i).rate
-            //viewListItems.get(i).rate *= coefficient
-        }
-        _currentListItems.postValue(viewListItems)
+         viewListItems = mutableListOf()
+
+         Log.d("TAG", "listItem(1) = ${listItems.get(1).rate.toString()}")
+         for (item in listItems){
+             viewListItems.add(item.copy(item.base, item.name, item.drawable, (item.rate)))
+         }
+
+         ////
+         viewModelScope.launch {
+             updateNewItems(viewListItems)
+             //updateNewItems(copiedListItems)
+         }
+         ////
+
+
+        //_currentListItems.postValue(viewListItems)
     }
 
-    suspend fun setInitializedLists(){
+    suspend fun getItems(): MutableList<Item>{
+
         if(!this::listItems.isInitialized){
             listItems = itemService.getItems()
         }
+        return listItems
+    }
 
-        viewListItems = mutableListOf()
+    suspend fun startRefreshingRates(){
+        var isRefreshing: Boolean = true
+        while(isRefreshing){
+            delay(6000)
 
-        for (item in listItems){
-            viewListItems.add(item.copy(item.base, item.name, item.drawable, item.rate))
+            val newItems = itemService.getItems()
+
+            updateNewItems(newItems)
+
+            //isRefreshing = false
         }
     }
 
-    fun getViewItems(): MutableList<Item>{
-        return viewListItems
+    suspend fun updateNewItems(newItems: MutableList<Item>){
+
+        //viewListItems = mutableListOf()
+
+        for(item in listItems) {
+            for (newItem in newItems) {
+                if (item.base == newItem.base) {
+                    item.rate = newItem.rate
+                }
+            }
+        }
+        coefficientFirstRate?.let{
+            if(it > 0){
+                for(item in listItems){
+                    item.rate *= it
+                }
+            }
+        }
+
+        coefficientFirstRate?.let {
+            listItems.get(0).rate = it
+        }
+
+        _currentListItems.postValue(listItems)
+            //_currentListItems.postValue(viewListItems)
     }
+
 }
