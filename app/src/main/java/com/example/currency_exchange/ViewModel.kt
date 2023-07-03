@@ -57,7 +57,7 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
 
          Log.d("TAG", "listItem(1) = ${listItems.get(1).rate.toString()}")
          for (item in listItems){
-             viewListItems.add(item.copy(item.base, item.name, item.drawable, (item.rate)))
+             viewListItems.add(item.copy(item.base, item.name, item.drawable, item.rate))
          }
 
          ////
@@ -117,6 +117,17 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
 
         _currentListItems.postValue(listItems)
             //_currentListItems.postValue(viewListItems)
+    }
+
+    fun pushItToListItems(newList: MutableList<Item>){
+
+        for(item in listItems) {
+            for (newItem in newList) {
+                if (item.base == newItem.base) {
+                    item.rate = newItem.rate
+                }
+            }
+        }
     }
 
 }
