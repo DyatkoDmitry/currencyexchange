@@ -47,5 +47,4 @@ class ItemService @Inject constructor(val localStateService: LocalStateService, 
         }
         return item
     }
-
 }

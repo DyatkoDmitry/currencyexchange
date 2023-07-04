@@ -7,21 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currency_exchange.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ViewModelMy by viewModels{(application as App).appComponent.getViewModelsFactory()}
     private lateinit var adapter:Adapter2
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -36,15 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            //viewModel.setInitializedLists()
-
-            //val viewItems = viewModel.getViewItems()
             val items = viewModel.getItems()
             adapter = Adapter2(items, viewModel.itemFocusListener)
 
-
             recyclerView.adapter = adapter
-
 
             adapter.sharedFlowEditable.collect(){
                 viewModel.setCoefficient(it)
@@ -60,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             adapter.setNewListItems(it)
             adapter.notifyDataSetChanged()
             recyclerView.scrollToPosition(0)
+
         })
     }
 }

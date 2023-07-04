@@ -5,24 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currency_exchange.model.APIService
 import com.example.currency_exchange.model.Item
 import com.example.currency_exchange.model.ItemService
-import kotlinx.coroutines.Delay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ViewModelMy(val apiService: APIService, val itemService: ItemService): ViewModel() {
+class ViewModelMy(val itemService: ItemService): ViewModel() {
 
     private val _currentListItems: MutableLiveData<MutableList<Item>> = MutableLiveData<MutableList<Item>>()
     val currentListItems: LiveData<MutableList<Item>> = _currentListItems
 
     private lateinit var listItems: MutableList<Item>
-
-    private lateinit var viewListItems: MutableList<Item>
-
-    private lateinit var copiedListItems: MutableList<Item>
 
     private var coefficientFirstRate: Float? = null
 
@@ -53,22 +47,9 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
 
          coefficientFirstRate = coefficient
 
-         viewListItems = mutableListOf()
-
-         Log.d("TAG", "listItem(1) = ${listItems.get(1).rate.toString()}")
-         for (item in listItems){
-             viewListItems.add(item.copy(item.base, item.name, item.drawable, item.rate))
-         }
-
-         ////
          viewModelScope.launch {
-             updateNewItems(viewListItems)
-             //updateNewItems(copiedListItems)
+             recycleList()
          }
-         ////
-
-
-        //_currentListItems.postValue(viewListItems)
     }
 
     suspend fun getItems(): MutableList<Item>{
@@ -80,46 +61,42 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
     }
 
     suspend fun startRefreshingRates(){
-        var isRefreshing: Boolean = true
-        while(isRefreshing){
-            delay(6000)
 
-            val newItems = itemService.getItems()
+        while(true){
+            delay(5000)
 
-            updateNewItems(newItems)
+            val newList = itemService.getItems()
 
-            //isRefreshing = false
+            updateRates(newList)
+
+            recycleList()
         }
     }
 
-    suspend fun updateNewItems(newItems: MutableList<Item>){
+    suspend fun recycleList(){
 
-        //viewListItems = mutableListOf()
+        var viewListItems: MutableList<Item> = mutableListOf()
 
-        for(item in listItems) {
-            for (newItem in newItems) {
-                if (item.base == newItem.base) {
-                    item.rate = newItem.rate
-                }
-            }
+        for (item in listItems){
+            viewListItems.add(item.copy(item.base, item.name, item.drawable, item.rate))
         }
+
         coefficientFirstRate?.let{
             if(it > 0){
-                for(item in listItems){
-                    item.rate *= it
+                for(viewItem in viewListItems){
+                    viewItem.rate *= it
                 }
             }
         }
 
         coefficientFirstRate?.let {
-            listItems.get(0).rate = it
+            viewListItems.get(0).rate = it
         }
 
-        _currentListItems.postValue(listItems)
-            //_currentListItems.postValue(viewListItems)
+        _currentListItems.postValue(viewListItems)
     }
 
-    fun pushItToListItems(newList: MutableList<Item>){
+    fun updateRates(newList: MutableList<Item>){
 
         for(item in listItems) {
             for (newItem in newList) {
@@ -129,5 +106,4 @@ class ViewModelMy(val apiService: APIService, val itemService: ItemService): Vie
             }
         }
     }
-
 }

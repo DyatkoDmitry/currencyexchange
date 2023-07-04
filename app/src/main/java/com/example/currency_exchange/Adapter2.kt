@@ -1,7 +1,6 @@
 package com.example.currency_exchange
 
 
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currency_exchange.model.Item
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +30,6 @@ class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemFocu
     var viewListItems:MutableList<Item> = viewListItems
     private val _sharedFlowEditable = MutableSharedFlow<Float>()
     val sharedFlowEditable = _sharedFlowEditable.asSharedFlow()
-    private var clickedPosition = -1
 
     lateinit var jobTextListener: Job
 
@@ -64,7 +61,7 @@ class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemFocu
 
     override fun onViewDetachedFromWindow(holder: MyViewHolder) {
         super.onViewDetachedFromWindow(holder)
-           holder.disableTextWatcher()
+        holder.disableTextWatcher()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -72,7 +69,6 @@ class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemFocu
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
 
         val myViewHolder = MyViewHolder(itemView, textWatcherMy)
-
 
         itemView.setOnTouchListener { view, motionEvent ->
 
@@ -115,7 +111,6 @@ class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemFocu
     }
 
     private fun selectItem(position:Int){
-
         itemFocusListener.invoke(position)
     }
 
@@ -123,11 +118,9 @@ class Adapter2 @Inject constructor(viewListItems:MutableList<Item>, val itemFocu
 
         val scope = CoroutineScope(Dispatchers.Main + Job())
 
-        override fun afterTextChanged(editable: Editable?) {
-        }
+        override fun afterTextChanged(editable: Editable?) {}
 
-        override fun beforeTextChanged(s: CharSequence?,start: Int,count: Int,after: Int) {
-        }
+        override fun beforeTextChanged(s: CharSequence?,start: Int,count: Int,after: Int) {}
 
         override fun onTextChanged(s: CharSequence?,start: Int,before: Int,count: Int) {
 
