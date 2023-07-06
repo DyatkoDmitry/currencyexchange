@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ViewModelMy by viewModels{(application as App).appComponent.getViewModelsFactory()}
-    private lateinit var adapter:Adapter2
+    private lateinit var adapter:Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
 
             val items = viewModel.getItems()
-            adapter = Adapter2(items, viewModel.itemFocusListener)
+            adapter = Adapter(items, viewModel.itemFocusListener)
 
             recyclerView.adapter = adapter
 
