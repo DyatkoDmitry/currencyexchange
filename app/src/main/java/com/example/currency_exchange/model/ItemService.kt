@@ -24,11 +24,20 @@ class ItemService @Inject constructor(val localStateService: LocalStateService, 
             for(remoteState in listRemoteStates){
                 if(remoteState.base.equals(base)){
                     rate = remoteState.rate
+                    //rate = setValidRate(remoteState.rate)
                 }
             }
             listItems.add(i, Item(base,name,drawable,rate))
         }
         return listItems
+    }
+
+    private fun setValidRate(rate: Float): Float{
+        val(integerPart, fractionalPart) = rate.toString().split(".")
+        if(fractionalPart.length <= 5) return rate
+
+        val fractionalRate = fractionalPart.substring(0,5)
+        return (integerPart + "." + fractionalRate).toFloat()
     }
 
     suspend fun getItem(base: String): Item?{
@@ -38,6 +47,7 @@ class ItemService @Inject constructor(val localStateService: LocalStateService, 
 
         for(localState in listLocalStates){
             if(localState.base.equals(base)){
+               //val rate=setValidRate(remoteCertainState.rate)
                val rate=remoteCertainState.rate
                val base=localState.base
                val drawable = localState.drawable

@@ -1,7 +1,9 @@
 package com.example.currency_exchange
 
 
+import DecimalDigitsInputFilter
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 typealias ItemFocusListener = (Int) -> Unit
 
@@ -41,6 +44,9 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
         val textViewBase: TextView = itemView.findViewById(R.id.textViewBase)
         val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
         val editText: EditText = itemView.findViewById(R.id.editText)
+
+
+
 
         fun enableTextWatcher() {
             editText.addTextChangedListener(textWatcher)
@@ -91,6 +97,8 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
             }
         }
 
+
+
         return myViewHolder
     }
 
@@ -104,6 +112,9 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
         holder.imageView.setImageDrawable(itemState.drawable)
         holder.textViewBase.text = itemState.base
         holder.textViewDescription.text = itemState.name
+
+        holder.editText.setFilters(arrayOf<InputFilter>(InputFilterEditText()))
+
         holder.editText.setText(itemState.rate.toString())
     }
 
