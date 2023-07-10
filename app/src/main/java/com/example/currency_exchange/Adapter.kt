@@ -1,7 +1,6 @@
 package com.example.currency_exchange
 
 
-import DecimalDigitsInputFilter
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -50,10 +49,13 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
 
         fun enableTextWatcher() {
             editText.addTextChangedListener(textWatcher)
+            //editText.setFilters(arrayOf<InputFilter>(InputFilterEditText()))
+
         }
 
         fun disableTextWatcher() {
             editText.removeTextChangedListener(textWatcher)
+
         }
     }
 
