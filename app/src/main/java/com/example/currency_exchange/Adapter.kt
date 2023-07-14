@@ -4,6 +4,7 @@ package com.example.currency_exchange
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -70,6 +71,7 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
 
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
 
