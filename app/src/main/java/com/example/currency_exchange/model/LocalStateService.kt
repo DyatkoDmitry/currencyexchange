@@ -2,8 +2,12 @@ package com.example.currency_exchange.model
 
 import android.content.Context
 import com.example.currency_exchange.R
+import javax.inject.Inject
 
-class LocalStateService(val context: Context) {
+class LocalStateService @Inject constructor() {
+
+    @Inject
+    lateinit var context: Context
 
     fun getLocalStates():List<LocalState>{
 

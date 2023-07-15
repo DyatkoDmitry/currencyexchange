@@ -1,6 +1,5 @@
 package com.example.currency_exchange
 
-
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -50,13 +49,10 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
 
         fun enableTextWatcher() {
             editText.addTextChangedListener(textWatcher)
-            //editText.setFilters(arrayOf<InputFilter>(InputFilterEditText()))
-
         }
 
         fun disableTextWatcher() {
             editText.removeTextChangedListener(textWatcher)
-
         }
     }
 
@@ -71,7 +67,6 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
 
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
 
@@ -100,9 +95,6 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
                   selectItem(myViewHolder.adapterPosition)
             }
         }
-
-
-
         return myViewHolder
     }
 

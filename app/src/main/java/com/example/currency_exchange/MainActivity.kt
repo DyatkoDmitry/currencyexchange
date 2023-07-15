@@ -9,19 +9,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currency_exchange.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: ViewModelMy by viewModels{(application as App).appComponent.getViewModelsFactory()}
+
+    private val viewModel: ViewModelMy by viewModels{(application as App).viewModelFactory}
     private lateinit var adapter:Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
-        (application as App).appComponent.injectMainActivity(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

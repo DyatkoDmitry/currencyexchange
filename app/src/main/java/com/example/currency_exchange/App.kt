@@ -1,17 +1,28 @@
 package com.example.currency_exchange
 
 import android.app.Application
-import com.example.currency_exchange.modules.ModuleContext
+import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
+@HiltAndroidApp
 class App: Application() {
-    lateinit var appComponent: AppComponent
 
-    override fun onCreate() {
-        super.onCreate()
+    @ApplicationContext
+    val context = this
 
-        appComponent = DaggerAppComponent
-            .builder()
-            .moduleContext(ModuleContext(this))
-            .build()
-    }
+    @Inject
+    lateinit var viewModelFactory:ViewModelFactory
+
 }
+
+/* lateinit var appComponent: AppComponent
+
+   override fun onCreate() {
+       super.onCreate()
+
+       appComponent = DaggerAppComponent
+           .builder()
+           .moduleContext(ModuleContext(this))
+           .build()
+   }*/

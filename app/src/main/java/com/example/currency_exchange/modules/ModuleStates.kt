@@ -5,13 +5,17 @@ import com.example.currency_exchange.model.LocalState
 import com.example.currency_exchange.model.LocalStateService
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import javax.inject.Inject
 
-@Module(includes = [ModuleContext::class])
+@Module
+@InstallIn(ActivityComponent::class)
 class ModuleStates {
 
     @Provides
-    fun getLocalStateService(context: Context): LocalStateService {
-        return LocalStateService(context)
+    fun getLocalStateService(): LocalStateService {
+        return LocalStateService()
     }
 
     @Provides

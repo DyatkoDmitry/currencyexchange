@@ -1,5 +1,6 @@
 package com.example.currency_exchange
 
+/*
 
 import com.example.currency_exchange.model.APIService
 import com.example.currency_exchange.model.LocalStateService
@@ -25,4 +26,4 @@ interface AppComponent {
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class AppScope
+annotation class AppScope*/
