@@ -3,8 +3,6 @@ package com.example.currency_exchange.model
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
-
 class ItemService @Inject constructor(val localStateService: LocalStateService, val apiService: APIService) {
 
     val listLocalStates = localStateService.getLocalStates()

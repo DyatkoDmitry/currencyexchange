@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 typealias ItemFocusListener = (Int) -> Unit
 
-class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocusListener: ItemFocusListener): RecyclerView.Adapter<Adapter.MyViewHolder>() {
+class Adapter(viewListItems:MutableList<Item>, val itemFocusListener: ItemFocusListener): RecyclerView.Adapter<Adapter.MyViewHolder>() {
 
     var viewListItems:MutableList<Item> = viewListItems
     private val _sharedFlowEditable = MutableSharedFlow<Float>()
@@ -43,9 +43,6 @@ class Adapter @Inject constructor(viewListItems:MutableList<Item>, val itemFocus
         val textViewBase: TextView = itemView.findViewById(R.id.textViewBase)
         val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
         val editText: EditText = itemView.findViewById(R.id.editText)
-
-
-
 
         fun enableTextWatcher() {
             editText.addTextChangedListener(textWatcher)

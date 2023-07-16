@@ -2,11 +2,13 @@ package com.example.currency_exchange.model
 
 import android.content.Context
 import com.example.currency_exchange.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class LocalStateService @Inject constructor() {
 
     @Inject
+    @ApplicationContext
     lateinit var context: Context
 
     fun getLocalStates():List<LocalState>{

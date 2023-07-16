@@ -8,21 +8,7 @@ import javax.inject.Inject
 @HiltAndroidApp
 class App: Application() {
 
-    @ApplicationContext
-    val context = this
-
     @Inject
     lateinit var viewModelFactory:ViewModelFactory
 
 }
-
-/* lateinit var appComponent: AppComponent
-
-   override fun onCreate() {
-       super.onCreate()
-
-       appComponent = DaggerAppComponent
-           .builder()
-           .moduleContext(ModuleContext(this))
-           .build()
-   }*/
