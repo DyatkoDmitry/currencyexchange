@@ -1,7 +1,6 @@
 package com.example.currency_exchange
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -11,14 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.currency_exchange.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    private val viewModel: ViewModelMy by viewModels{(application as App).viewModelFactory}
+    private val viewModel: ViewModelMy by viewModels()
     private lateinit var adapter:Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +49,6 @@ class MainActivity : AppCompatActivity() {
             adapter.setNewListItems(it)
             adapter.notifyDataSetChanged()
             recyclerView.scrollToPosition(0)
-
         })
     }
 }

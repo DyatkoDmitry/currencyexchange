@@ -15,7 +15,7 @@ class LocalStateService @Inject constructor() {
 
         val mainArray = context.resources.obtainTypedArray(R.array.arrayAllCurrency)
         val length = mainArray.length()
-        var stateList: MutableList<LocalState> = mutableListOf()
+        val stateList: MutableList<LocalState> = mutableListOf()
 
         for (i in 0 until length){
             val resId = mainArray.getResourceId(i,0)

@@ -2,7 +2,6 @@ package com.example.currency_exchange
 
 import android.text.InputFilter
 import android.text.Spanned
-import android.util.Log
 
 class InputFilterEditText: InputFilter {
 
@@ -25,10 +24,6 @@ class InputFilterEditText: InputFilter {
         } ?: return source
     }
 }
-
-
-
-
 
 /*
 class InputFilterEditText: InputFilter {

@@ -1,5 +1,6 @@
 package com.example.currency_exchange
 
+/*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.currency_exchange.model.ItemService
@@ -11,3 +12,4 @@ class ViewModelFactory @Inject constructor(val itemService: ItemService) : ViewM
         return ViewModelMy(itemService) as T
     }
 }
+*/

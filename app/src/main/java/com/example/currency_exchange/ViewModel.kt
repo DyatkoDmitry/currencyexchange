@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.currency_exchange.model.Item
 import com.example.currency_exchange.model.ItemService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ViewModelMy(val itemService: ItemService): ViewModel() {
+@HiltViewModel
+class ViewModelMy @Inject constructor(val itemService: ItemService): ViewModel() {
 
     private val _currentListItems: MutableLiveData<MutableList<Item>> = MutableLiveData<MutableList<Item>>()
     val currentListItems: LiveData<MutableList<Item>> = _currentListItems
@@ -72,7 +74,7 @@ class ViewModelMy(val itemService: ItemService): ViewModel() {
         }
     }
 
-    suspend fun recycleList(){
+    fun recycleList(){
 
         var viewListItems: MutableList<Item> = mutableListOf()
 
